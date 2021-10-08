@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <application>           
+        <resource-bundle>
+            <base-name>co.com.i18n.Messages_es</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>co.com.i18n.ValidacionesSistema</base-name>
+            <var>vslSis</var>
+        </resource-bundle>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+                
+        <locale-config>
+            <default-locale>es</default-locale>
+            <supported-locale>es</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <message-bundle>co.com.i18n.Messages_es</message-bundle>
+    </application>
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>showInicio</from-outcome>
+            <to-view-id>/formularios/inicio/frmInicio.xhtml</to-view-id>
+        </navigation-case>        
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <factory>
+        <exception-handler-factory>co.com.errores.ErroresExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+</faces-config>

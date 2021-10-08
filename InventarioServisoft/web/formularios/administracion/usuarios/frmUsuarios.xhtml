@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/WEB-INF/templates/BasicTemplates.xhtml" >
+        <ui:define name="nav">
+            <ui:include src="/formularios/inicio/frmMenuGeneral.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="formularioUsuarios" >
+                <rich:notifyMessages stayTime="5000" nonblocking="true" />
+                <rich:panel id="richUsuarios" header="#{msg.adminUsuarios}">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label>#{msg.usuario}</label>
+                            <h:inputText id="idUsuario" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.idUsuario}"
+                                         readonly="#{usuariosControlador.estaModificando}" p:placeholder="#{msg.usuario}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-md-2">
+                            <label>#{msg.identificacion}</label>
+                            <h:inputText id="identificacion" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.identificacion}"
+                                         p:placeholder="#{msg.identificacion}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-md-3">
+                            <label>#{msg.nombrePersona}</label>
+                            <h:inputText id="nombreUsuario" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.nombreUsuario}"
+                                         p:placeholder="#{msg.nombrePersona}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-md-3">
+                            <label>#{msg.apellidoPersona}</label>                               
+                            <h:inputText id="apellidosUsuario" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.apellidoUsuario}"
+                                         p:placeholder="#{msg.apellidoPersona}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>                                
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label>#{msg.correo}</label>                               
+                            <h:inputText id="correoUsuario" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.correo}"
+                                         p:placeholder="#{msg.correo}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>                                
+                        </div>
+                        <div class="col-md-2">
+                            <label>#{msg.contrasena}</label>
+                            <h:inputSecret id="contrasena" styleClass="form-control input-sm" value="#{usuariosControlador.usuario.clave}"
+                                           p:placeholder="#{msg.contrasena}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputSecret>
+                        </div>
+                        <div class="col-md-2">
+                            <label>#{msg.confirmacionContrasena}</label>
+                            <h:inputSecret id="confirmContrasena" styleClass="form-control input-sm" value="#{usuariosControlador.confirmacionContrasena}"
+                                           p:placeholder="#{msg.confirmacionContrasena}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputSecret>
+                        </div>
+                 
+                    
+                        <div class="col-md-2">
+                            <label>#{msg.estado}</label>
+                            <h:selectOneMenu id="estado" value="#{usuariosControlador.usuario.estado}" styleClass="form-control input-sm">
+                                <f:selectItem itemValue="" itemLabel="#{msg.seleccionar}"/>
+                                <f:selectItem itemValue="A" itemLabel="ACTIVO"/>
+                                <f:selectItem itemValue="I" itemLabel="INACTIVO"/>
+                                <f:ajax event="change" execute="@this"/>
+                            </h:selectOneMenu>
+                        </div> 
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <h:panelGrid columns="3">
+                                <a4j:commandButton action="#{usuariosControlador.guardarUsuario()}" value="#{msg.guardar}" rendered="#{!usuariosControlador.estaModificando}"
+                                                   styleClass="btn btn-default" render="richTablaUsuarios richUsuarios"/>
+                                <a4j:commandButton action="#{usuariosControlador.modificarUsuario()}" value="#{msg.modificar}" rendered="#{usuariosControlador.estaModificando}"
+                                                   styleClass="btn btn-default" render="richTablaUsuarios richUsuarios"/>
+                                <a4j:commandButton action="#{usuariosControlador.limpiarUsuario()}" value="#{msg.limpiar}"
+                                                   styleClass="btn btn-default" render="richTablaUsuarios richUsuarios" id="botonLimpiar"/>
+                                <rich:message for="botonLimpiar"/>
+                            </h:panelGrid>
+                        </div>
+                    </div>
+                </rich:panel>
+                <rich:panel id="richTablaUsuarios" header="#{msg.usuarios}">
+                    <rich:dataTable id="tablaUsuarios" value="#{usuariosControlador.listaUsuarios}" 
+                                    var="usuario" noDataLabel="#{msg.noHayRegistros}" styleClass="table table-hover table-condensed text-center" rows="10">
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.ver}" />
+                            </f:facet>
+                            <a4j:commandLink title="#{msg.ver}" action="#{usuariosControlador.cargarInformacionUsuario(usuario)}"
+                                             render="richUsuarios">
+                                <span class="glyphicon glyphicon-eye-open" style="font-size:14px;"/>
+                            </a4j:commandLink>                                
+                        </rich:column>
+
+                  
+
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.usuario}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.idUsuario}"/>
+                        </rich:column>
+
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.identificacion}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.identificacion}"/>
+                        </rich:column>
+
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.nombreCompleto}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.nombreUsuario} #{usuario.apellidoUsuario}"/>
+                        </rich:column>
+
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.correo}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.correo} "/>
+                        </rich:column>
+
+                   
+
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.estado}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.estado eq 'A' ? 'ACTIVO' : 'INACTIVO'}"/>
+                        </rich:column>
+
+                        <f:facet name="footer">
+                            <rich:dataScroller for="tablaUsuarios" maxPages="10" fastStep="5" />
+                        </f:facet>
+                    </rich:dataTable>
+                </rich:panel>
+            </h:form>
+        </ui:define>           
+    </ui:composition>
+</html>

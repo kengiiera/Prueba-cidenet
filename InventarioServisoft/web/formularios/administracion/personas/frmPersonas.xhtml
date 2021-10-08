@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/WEB-INF/templates/BasicTemplates.xhtml" >
+        <ui:define name="nav">
+            <ui:include src="/formularios/inicio/frmMenuGeneral.xhtml"></ui:include>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="formularioPersona" >
+                <rich:notifyMessages stayTime="5000" nonblocking="true" />
+                <rich:panel id="richPersonas" header="#{msg.adminPersonas}">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label>#{msg.tipoIdentificacion} </label>
+                            <h:selectOneMenu id="rol" value="#{personaControlador.persona.tipoIdentificacion}" styleClass="form-control input-sm">
+                                <f:selectItem itemValue="S" itemLabel="#{msg.seleccionar}"/>
+                                <f:selectItem itemValue="#{msg.cedula}" itemLabel="#{msg.cedula}" />
+                                <f:selectItem itemValue="#{msg.tarjetaidentidad}" itemLabel="#{msg.tarjetaidentidad}" />
+                                <f:selectItem itemValue="#{msg.nit}" itemLabel="#{msg.nit}" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-2">
+                            <label>#{msg.identificacion}</label>
+                            <h:inputText id="identificacionPersona"  styleClass="form-control input-sm" value="#{personaControlador.persona.identificacion}"
+                                         readonly="#{personaControlador.estaModificando}"  p:placeholder="#{msg.identificacion}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+                       
+                        <div class="col-md-2">
+                            <label>#{msg.nombrePersona}</label>
+                            <h:inputText id="nombrePersona" styleClass="form-control input-sm" value="#{personaControlador.persona.primernombre}"
+                                         p:placeholder="#{msg.nombrePersona}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+                             
+                                <div class="col-md-2">
+                            <label>#{msg.nombrePersona2}</label>
+                            <h:inputText id="nombrePersona2" styleClass="form-control input-sm" value="#{personaControlador.persona.segundonombre}"
+                                         p:placeholder="#{msg.nombrePersona2}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>
+                        </div>
+               
+                  
+                    </div>
+                    <div class="form-group row">
+                         <div class="col-md-2">
+                            <label>#{msg.apellidoPersona}</label>                               
+                            <h:inputText id="apellidosPersona" styleClass="form-control input-sm" value="#{personaControlador.persona.primerapellido}"
+                                         p:placeholder="#{msg.apellidoPersona}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>                                
+                        </div>
+                        
+                         <div class="col-md-2">
+                            <label>#{msg.apellidoPersona2}</label>                               
+                            <h:inputText id="apellidosPersona2" styleClass="form-control input-sm" value="#{personaControlador.persona.segundoapellido}"
+                                         p:placeholder="#{msg.apellidoPersona2}">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>                                
+                        </div>
+                       <div class="col-md-2">
+                            <label>#{msg.paisempleo} </label>
+                            <h:selectOneMenu id="rol2" value="#{personaControlador.persona.paisempleo}" styleClass="form-control input-sm">
+                                <f:selectItem itemValue="S" itemLabel="#{msg.seleccionar}"/>
+                                <f:selectItem itemValue="#{msg.paisServicioCO}" itemLabel="#{msg.paisServicioCO}" />
+                                <f:selectItem itemValue="#{msg.paisServicioEU}" itemLabel="#{msg.paisServicioEU}" />
+                               
+                            </h:selectOneMenu>
+                        </div>
+                       
+                       <div class="col-md-2">
+                            <label>#{msg.correo}</label>                               
+                            <h:inputText id="correoPersona" styleClass="form-control input-sm" value="#{personaControlador.persona.correo}"
+                                         p:placeholder="#{msg.correo}" readonly="true">
+                                <f:ajax event="change" execute="@this"/>
+                            </h:inputText>                                
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <h:panelGrid columns="3">
+                                <a4j:commandButton action="#{personaControlador.guardarPersona()}" value="#{msg.guardar}" rendered="#{!personaControlador.estaModificando}"
+                                                   styleClass="btn btn-default" render="richTablaPersonas richPersonas"/>
+                                <a4j:commandButton action="#{personaControlador.modificarPersona()}" value="#{msg.modificar}" rendered="#{personaControlador.estaModificando}"
+                                                   styleClass="btn btn-default" render="richTablaPersonas richPersonas"/>
+                                <a4j:commandButton action="#{personaControlador.limpiarPersona()}" value="#{msg.limpiar}"
+                                                   styleClass="btn btn-default" render="richTablaPersonas richPersonas" id="botonLimpiar"/>
+                                <rich:message for="botonLimpiar"/>
+                            </h:panelGrid>
+                        </div>
+                    </div>
+                </rich:panel>
+                <rich:panel id="richTablaPersonas" header="#{msg.persona}">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label>Búsqueda:</label>
+                            <h:inputText value="#{personaControlador.filtroPersona}" styleClass="form-control input-sm">
+                                <a4j:ajax event="keyup" render="tablaPersona" execute="@this" listener="#{personaControlador.filtrarTablaPersona()}"/>
+                            </h:inputText>
+                        </div>
+                    </div>
+                    <rich:dataTable id="tablaPersona" value="#{personaControlador.listaPersona}" 
+                                    var="Persona" noDataLabel="#{msg.noHayRegistros}" styleClass="table table-hover table-condensed text-center" rows="10">
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.ver}" />
+                            </f:facet>
+                            <a4j:commandLink title="#{msg.ver}" action="#{personaControlador.cargarInformacionPersona(Persona)}"
+                                             render="richPersonas">
+                                <span class="glyphicon glyphicon-eye-open" style="font-size:14px;"></span>
+                            </a4j:commandLink>                                 
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.identificacion}" />
+                            </f:facet>
+                            <h:outputText value="#{Persona.identificacion}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.tipoIdentificacion}" />
+                            </f:facet>
+                            <h:outputText value="#{Persona.tipoIdentificacion}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.nombreCompleto}" />
+                            </f:facet>   
+                            <h:outputText value="#{Persona.primernombre}  #{Persona.segundonombre}  #{Persona.primerapellido}  #{Persona.segundoapellido}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.paisempleo}" />
+                            </f:facet>
+                            <h:outputText value="#{Persona.paisempleo}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.correo}" />
+                            </f:facet>
+                            <h:outputText value="#{Persona.correo}"/>
+                        </rich:column>
+                        <f:facet name="footer">
+                            <rich:dataScroller for="tablaPersona" maxPages="10" fastStep="3"/>
+                        </f:facet>
+                    </rich:dataTable>
+                </rich:panel>
+            </h:form>
+        </ui:define>           
+    </ui:composition>
+</html>

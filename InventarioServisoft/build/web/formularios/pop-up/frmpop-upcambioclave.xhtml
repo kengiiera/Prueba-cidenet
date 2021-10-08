@@ -1,0 +1,71 @@
+<f:subview id="popupSubViewCambioClave" xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:ui="http://java.sun.com/jsf/facelets"
+           xmlns:h="http://java.sun.com/jsf/html"
+           xmlns:f="http://java.sun.com/jsf/core"
+           xmlns:a4j="http://richfaces.org/a4j"
+           xmlns:rich="http://richfaces.org/rich" 
+           xmlns:p="http://xmlns.jcp.org/jsf/passthrough"> 
+
+    <rich:popupPanel id="popupCambioClave" modal="true" show="true" rendered="#{autenticacionSesionControlador.mostrarPopUpCambioClave}" 
+                     height="300" width="600" domElementAttachment="form" >        
+        <f:facet name="header">
+            <h:panelGrid>
+                <h4 class="modal-title">#{msg.cambiarClave}</h4>
+            </h:panelGrid>
+        </f:facet>
+
+        <f:facet name="controls">  
+            <h:form>
+                <h:panelGrid>
+                    <h:commandLink onclick="#{rich:component('popupCambioClave')}.hide();" action="#{autenticacionSesionControlador.cerrarSesion()}">
+                        <span class="glyphicon glyphicon-remove" style="font-size: 16px; top: 5px"/>
+                    </h:commandLink>
+                </h:panelGrid>
+            </h:form>
+        </f:facet>
+
+        <h:form id="frmCambioClave">
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label>#{msg.usuario}</label>
+                    <h:inputText id="idUsuario" styleClass="form-control input-sm" value="#{autenticacionSesionControlador.nombreUsuario}"
+                                 readonly="true">
+                        <f:ajax event="change" execute="@this"/>
+                    </h:inputText>
+                </div>
+                <div class="col-md-4">
+                    <label>#{msg.contrasenaActual}</label>
+                    <h:inputSecret id="contrasenaActual" styleClass="form-control input-sm" value="#{autenticacionSesionControlador.contrasena}"
+                                   p:placeholder="#{msg.contrasenaActual}">
+                        <f:ajax event="change" execute="@this"/>
+                    </h:inputSecret>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label>#{msg.contrasenaNueva}</label>
+                    <h:inputSecret id="contrasena" styleClass="form-control input-sm" value="#{autenticacionSesionControlador.cntrasnaNueva}"
+                                   p:placeholder="#{msg.contrasenaNueva}">
+                        <f:ajax event="change" execute="@this"/>
+                    </h:inputSecret>
+                </div>
+                <div class="col-md-4">
+                    <label>#{msg.confirmacionContrasena}</label>
+                    <h:inputSecret id="confirmacionContrasena" styleClass="form-control input-sm" value="#{autenticacionSesionControlador.confirmCntrasnaNueva}"
+                                   p:placeholder="#{msg.confirmacionContrasena}">
+                        <f:ajax event="change" execute="@this"/>
+                    </h:inputSecret>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <h:panelGrid columns="2">
+                        <h:commandButton action="#{autenticacionSesionControlador.cambiarClave()}" value="#{msg.cambiarClave}"
+                                         styleClass="btn btn-default" id="botonCambiarClave"/>
+                        <rich:message for="botonCambiarClave"/>
+                    </h:panelGrid>
+                </div>
+            </div>
+        </h:form>
+    </rich:popupPanel>
+</f:subview>

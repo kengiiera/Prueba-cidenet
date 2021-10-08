@@ -1,0 +1,5 @@
+Para ingresar:
+Usuario: cidenet
+Contrasena: 123456
+
+En el menu ingresar a empleados.
